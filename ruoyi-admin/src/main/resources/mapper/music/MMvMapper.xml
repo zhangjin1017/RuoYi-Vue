@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.music.mapper.MMvMapper">
+    
+    <resultMap type="MMv" id="MMvResult">
+        <result property="mvId"    column="mv_id"    />
+        <result property="name"    column="name"    />
+        <result property="artistId"    column="artist_id"    />
+        <result property="artistName"    column="artist_name"    />
+        <result property="brs"    column="brs"    />
+        <result property="description"    column="description"    />
+        <result property="duration"    column="duration"    />
+        <result property="playCount"    column="play_count"    />
+        <result property="shareCount"    column="share_count"    />
+        <result property="publishTime"    column="publish_time"    />
+    </resultMap>
+
+    <sql id="selectMMvVo">
+        select mv_id, name, artist_id, artist_name, brs, description, duration, play_count, share_count, publish_time from m_mv
+    </sql>
+
+    <select id="selectMMvList" parameterType="MMv" resultMap="MMvResult">
+        <include refid="selectMMvVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="artistId != null "> and artist_id = #{artistId}</if>
+            <if test="artistName != null  and artistName != ''"> and artist_name like concat('%', #{artistName}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+            <if test="params.beginPlayCount != null and params.beginPlayCount != '' and params.endPlayCount != null and params.endPlayCount != ''"> and play_count between #{params.beginPlayCount} and #{params.endPlayCount}</if>
+            <if test="params.beginShareCount != null and params.beginShareCount != '' and params.endShareCount != null and params.endShareCount != ''"> and share_count between #{params.beginShareCount} and #{params.endShareCount}</if>
+            <if test="publishTime != null "> and publish_time like concat('%', #{publishTime}, '%')</if>
+        </where>
+        order by publish_time desc
+    </select>
+    
+    <select id="selectMMvByMvId" parameterType="String" resultMap="MMvResult">
+        <include refid="selectMMvVo"/>
+        where mv_id = #{mvId}
+    </select>
+        
+    <insert id="insertMMv" parameterType="MMv">
+        insert into m_mv
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mvId != null">mv_id,</if>
+            <if test="name != null">name,</if>
+            <if test="artistId != null">artist_id,</if>
+            <if test="artistName != null">artist_name,</if>
+            <if test="brs != null">brs,</if>
+            <if test="description != null">description,</if>
+            <if test="duration != null">duration,</if>
+            <if test="playCount != null">play_count,</if>
+            <if test="shareCount != null">share_count,</if>
+            <if test="publishTime != null">publish_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mvId != null">#{mvId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="artistId != null">#{artistId},</if>
+            <if test="artistName != null">#{artistName},</if>
+            <if test="brs != null">#{brs},</if>
+            <if test="description != null">#{description},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="playCount != null">#{playCount},</if>
+            <if test="shareCount != null">#{shareCount},</if>
+            <if test="publishTime != null">#{publishTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMMv" parameterType="MMv">
+        update m_mv
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="artistId != null">artist_id = #{artistId},</if>
+            <if test="artistName != null">artist_name = #{artistName},</if>
+            <if test="brs != null">brs = #{brs},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="playCount != null">play_count = #{playCount},</if>
+            <if test="shareCount != null">share_count = #{shareCount},</if>
+            <if test="publishTime != null">publish_time = #{publishTime},</if>
+        </trim>
+        where mv_id = #{mvId}
+    </update>
+
+    <delete id="deleteMMvByMvId" parameterType="String">
+        delete from m_mv where mv_id = #{mvId}
+    </delete>
+
+    <delete id="deleteMMvByMvIds" parameterType="String">
+        delete from m_mv where mv_id in 
+        <foreach item="mvId" collection="array" open="(" separator="," close=")">
+            #{mvId}
+        </foreach>
+    </delete>
+</mapper>

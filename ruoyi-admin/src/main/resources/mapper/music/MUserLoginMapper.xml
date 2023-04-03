@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.music.mapper.MUserLoginMapper">
+    
+    <resultMap type="MUserLogin" id="MUserLoginResult">
+        <result property="userId"    column="user_id"    />
+        <result property="email"    column="email"    />
+        <result property="password"    column="password"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectMUserLoginVo">
+        select user_id, email, password, create_time from m_user_login
+    </sql>
+
+    <select id="selectMUserLoginList" parameterType="MUserLogin" resultMap="MUserLoginResult">
+        <include refid="selectMUserLoginVo"/>
+        <where>  
+            <if test="userId != null  and userId != ''"> and user_id like concat('%', #{userId}, '%')</if>
+            <if test="email != null  and email != ''"> and email like concat('%', #{email}, '%')</if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != '' and params.endCreateTime != null and params.endCreateTime != ''"> and create_time between #{params.beginCreateTime} and #{params.endCreateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectMUserLoginByUserId" parameterType="String" resultMap="MUserLoginResult">
+        <include refid="selectMUserLoginVo"/>
+        where user_id = #{userId}
+    </select>
+        
+    <insert id="insertMUserLogin" parameterType="MUserLogin">
+        insert into m_user_login
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="email != null">email,</if>
+            <if test="password != null">password,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="email != null">#{email},</if>
+            <if test="password != null">#{password},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMUserLogin" parameterType="MUserLogin">
+        update m_user_login
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="email != null">email = #{email},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+    <delete id="deleteMUserLoginByUserId" parameterType="String">
+        delete from m_user_login where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteMUserLoginByUserIds" parameterType="String">
+        delete from m_user_login where user_id in 
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+</mapper>

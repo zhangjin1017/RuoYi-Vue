@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.music.mapper.MMusicMapper">
+    
+    <resultMap type="MMusic" id="MMusicResult">
+        <result property="musicId"    column="music_id"    />
+        <result property="name"    column="name"    />
+        <result property="description"    column="description"    />
+        <result property="coverImg"    column="cover_img"    />
+        <result property="artists"    column="artists"    />
+        <result property="artistsId"    column="artists_id"    />
+        <result property="publicTime"    column="public_time"    />
+    </resultMap>
+
+    <sql id="selectMMusicVo">
+        select music_id, name, description, cover_img, artists, artists_id, public_time from m_music
+    </sql>
+
+    <select id="selectMMusicList" parameterType="MMusic" resultMap="MMusicResult">
+        <include refid="selectMMusicVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+            <if test="artists != null  and artists != ''"> and artists like concat('%', #{artists}, '%')</if>
+            <if test="artistsId != null  and artistsId != ''"> and artists_id = #{artistsId}</if>
+            <if test="params.beginPublicTime != null and params.beginPublicTime != '' and params.endPublicTime != null and params.endPublicTime != ''"> and public_time between #{params.beginPublicTime} and #{params.endPublicTime}</if>
+        </where>
+        ORDER BY public_time DESC
+    </select>
+    
+    <select id="selectMMusicByMusicId" parameterType="String" resultMap="MMusicResult">
+        <include refid="selectMMusicVo"/>
+        where music_id = #{musicId}
+    </select>
+        
+    <insert id="insertMMusic" parameterType="MMusic">
+        insert into m_music
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="musicId != null">music_id,</if>
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="coverImg != null">cover_img,</if>
+            <if test="artists != null">artists,</if>
+            <if test="artistsId != null">artists_id,</if>
+            <if test="publicTime != null">public_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="musicId != null">#{musicId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="coverImg != null">#{coverImg},</if>
+            <if test="artists != null">#{artists},</if>
+            <if test="artistsId != null">#{artistsId},</if>
+            <if test="publicTime != null">#{publicTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMMusic" parameterType="MMusic">
+        update m_music
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="coverImg != null">cover_img = #{coverImg},</if>
+            <if test="artists != null">artists = #{artists},</if>
+            <if test="artistsId != null">artists_id = #{artistsId},</if>
+            <if test="publicTime != null">public_time = #{publicTime},</if>
+        </trim>
+        where music_id = #{musicId}
+    </update>
+
+    <delete id="deleteMMusicByMusicId" parameterType="String">
+        delete from m_music where music_id = #{musicId}
+    </delete>
+
+    <delete id="deleteMMusicByMusicIds" parameterType="String">
+        delete from m_music where music_id in 
+        <foreach item="musicId" collection="array" open="(" separator="," close=")">
+            #{musicId}
+        </foreach>
+    </delete>
+</mapper>

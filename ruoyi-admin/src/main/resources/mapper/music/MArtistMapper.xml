@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.music.mapper.MArtistMapper">
+    
+    <resultMap type="MArtist" id="MArtistResult">
+        <result property="artistId"    column="artist_id"    />
+        <result property="name"    column="name"    />
+        <result property="alias"    column="alias"    />
+        <result property="coverImg"    column="cover_img"    />
+        <result property="albumSize"    column="album_size"    />
+        <result property="identities"    column="identities"    />
+        <result property="musicSize"    column="music_size"    />
+        <result property="mvSize"    column="mv_size"    />
+        <result property="briefDesc"    column="brief_desc"    />
+        <result property="introduction"    column="introduction"    />
+    </resultMap>
+
+    <sql id="selectMArtistVo">
+        select artist_id, name, alias, cover_img, album_size, identities, music_size, mv_size, brief_desc, introduction from m_artist
+    </sql>
+
+    <select id="selectMArtistList" parameterType="MArtist" resultMap="MArtistResult">
+        <include refid="selectMArtistVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="alias != null  and alias != ''"> and alias like concat('%', #{alias}, '%')</if>
+            <if test="params.beginAlbumSize != null and params.beginAlbumSize != '' and params.endAlbumSize != null and params.endAlbumSize != ''"> and album_size between #{params.beginAlbumSize} and #{params.endAlbumSize}</if>
+            <if test="identities != null  and identities != ''"> and identities = #{identities}</if>
+            <if test="params.beginMusicSize != null and params.beginMusicSize != '' and params.endMusicSize != null and params.endMusicSize != ''"> and music_size between #{params.beginMusicSize} and #{params.endMusicSize}</if>
+            <if test="params.beginMvSize != null and params.beginMvSize != '' and params.endMvSize != null and params.endMvSize != ''"> and mv_size between #{params.beginMvSize} and #{params.endMvSize}</if>
+            <if test="briefDesc != null  and briefDesc != ''"> and brief_desc like concat('%', #{briefDesc}, '%')</if>
+            <if test="introduction != null  and introduction != ''"> and introduction like concat('%', #{introduction}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectMArtistByArtistId" parameterType="String" resultMap="MArtistResult">
+        <include refid="selectMArtistVo"/>
+        where artist_id = #{artistId}
+    </select>
+        
+    <insert id="insertMArtist" parameterType="MArtist">
+        insert into m_artist
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="artistId != null">artist_id,</if>
+            <if test="name != null">name,</if>
+            <if test="alias != null">alias,</if>
+            <if test="coverImg != null">cover_img,</if>
+            <if test="albumSize != null">album_size,</if>
+            <if test="identities != null">identities,</if>
+            <if test="musicSize != null">music_size,</if>
+            <if test="mvSize != null">mv_size,</if>
+            <if test="briefDesc != null">brief_desc,</if>
+            <if test="introduction != null">introduction,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="artistId != null">#{artistId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="alias != null">#{alias},</if>
+            <if test="coverImg != null">#{coverImg},</if>
+            <if test="albumSize != null">#{albumSize},</if>
+            <if test="identities != null">#{identities},</if>
+            <if test="musicSize != null">#{musicSize},</if>
+            <if test="mvSize != null">#{mvSize},</if>
+            <if test="briefDesc != null">#{briefDesc},</if>
+            <if test="introduction != null">#{introduction},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMArtist" parameterType="MArtist">
+        update m_artist
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="alias != null">alias = #{alias},</if>
+            <if test="coverImg != null">cover_img = #{coverImg},</if>
+            <if test="albumSize != null">album_size = #{albumSize},</if>
+            <if test="identities != null">identities = #{identities},</if>
+            <if test="musicSize != null">music_size = #{musicSize},</if>
+            <if test="mvSize != null">mv_size = #{mvSize},</if>
+            <if test="briefDesc != null">brief_desc = #{briefDesc},</if>
+            <if test="introduction != null">introduction = #{introduction},</if>
+        </trim>
+        where artist_id = #{artistId}
+    </update>
+
+    <delete id="deleteMArtistByArtistId" parameterType="String">
+        delete from m_artist where artist_id = #{artistId}
+    </delete>
+
+    <delete id="deleteMArtistByArtistIds" parameterType="String">
+        delete from m_artist where artist_id in 
+        <foreach item="artistId" collection="array" open="(" separator="," close=")">
+            #{artistId}
+        </foreach>
+    </delete>
+</mapper>
