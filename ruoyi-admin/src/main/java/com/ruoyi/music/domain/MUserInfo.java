@@ -1,11 +1,15 @@
 package com.ruoyi.music.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 用户信息对象 m_user_info
@@ -47,7 +51,54 @@ public class MUserInfo extends BaseEntity
     @Excel(name = "听歌时长")
     private Long listenTime;
 
-    public void setUserId(String userId) 
+    @TableField(exist = false)
+    private String email;
+
+    @TableField(exist = false)
+    private int vipType;
+
+    @TableField(exist = false)
+    private String cookie;
+
+    @TableField(exist = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+
+    public int getVipType() {
+        return vipType;
+    }
+
+    public void setVipType(int vipType) {
+        this.vipType = vipType;
+    }
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setUserId(String userId)
     {
         this.userId = userId;
     }

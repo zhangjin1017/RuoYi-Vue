@@ -120,7 +120,16 @@
 
     <!-- 添加或修改用户登录对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+      <!-- 邮箱 -->
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="form.email" placeholder="请输入邮箱" />
+        </el-form-item>
+      </el-form>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="form.password" placeholder="请输入密码" />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -155,7 +164,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      // 创建时间时间范围
+      // 密码时间范围
       daterangeCreateTime: [],
       // 查询参数
       queryParams: {

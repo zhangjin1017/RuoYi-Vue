@@ -106,7 +106,11 @@
     <el-table v-loading="loading" :data="infoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="用户id" align="center" prop="userId" />
-      <el-table-column label="头像" align="center" prop="img" />
+      <el-table-column label="头像" align="center" prop="img" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.img" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
       <el-table-column label="姓名" align="center" prop="name" />
       <el-table-column label="年龄" align="center" prop="age" />
       <el-table-column label="性别" align="center" prop="gender">
