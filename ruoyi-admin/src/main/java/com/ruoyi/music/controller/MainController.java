@@ -5,6 +5,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.music.domain.MMusic;
 import com.ruoyi.music.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/main")
+@CrossOrigin
 public class MainController extends BaseController {
 
     @Autowired
@@ -50,7 +52,7 @@ public class MainController extends BaseController {
             String month = releaseDate.substring(5, 7); // 获取歌曲的发布月份
             System.out.println(month);
             int monthInt = Integer.parseInt(month); // 将月份转换为int类型
-            months[monthInt - 1] += 1;
+            months[monthInt-1] += 1;
 
         }
 
@@ -62,5 +64,14 @@ public class MainController extends BaseController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String str = sdf.format(date);
         return str;
+    }
+
+    /*
+    *  测试
+     */
+    @RequestMapping("/test")
+    public AjaxResult test() {
+        System.out.println( "test");
+        return AjaxResult.success().put("test", "test");
     }
 }

@@ -24,11 +24,20 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/music/music")
+@CrossOrigin
 public class MMusicController extends BaseController
 {
     @Autowired
     private IMMusicService mMusicService;
 
+    /**
+     * 测试
+     */
+    @GetMapping("/test")
+    public AjaxResult test()
+    {
+        return success("测试成功");
+    }
     /**
      * 查询歌曲信息列表
      */
