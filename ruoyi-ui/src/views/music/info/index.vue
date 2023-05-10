@@ -43,14 +43,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="听歌时长" prop="listenTime">
+      <!-- <el-form-item label="听歌时长" prop="listenTime">
         <el-input
           v-model="queryParams.listenTime"
           placeholder="请输入听歌时长"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -119,7 +119,7 @@
         </template>
       </el-table-column>
       <el-table-column label="简介" align="center" prop="introduction" />
-      <el-table-column label="听歌时长" align="center" prop="listenTime" />
+      <!-- <el-table-column label="听歌时长" align="center" prop="listenTime" /> -->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button

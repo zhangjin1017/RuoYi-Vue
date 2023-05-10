@@ -271,6 +271,8 @@ public class MUserLoginController extends BaseController
             userInfo.setImg("/profile/upload/2023/04/04/morenimg_20230404155159A001.jpg");
             userInfo.setName("用户" + RandomUtils.getGnerateNumberString(6));
             userInfo.setIntroduction("这个人很懒，什么都没有留下！");
+            userInfo.setGender("2");
+            userInfo.setAge(0L);
             userInfo.setListenTime(0L);
             //注册成功之后，向歌单表中插入一条数据
             MPlaylist playlist = new MPlaylist();
