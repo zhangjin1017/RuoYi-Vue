@@ -92,8 +92,8 @@ spring:
         max-wait: -1ms
   mail:
     host: smtp.qq.com
-    username: 1216916137@qq.com
-    password: qnexfxkbrctqgadb
+    username: ZzzjzzZ-zj@qq.com
+    password: ryxkonwmwmhchhag
 
 # token配置
 token:

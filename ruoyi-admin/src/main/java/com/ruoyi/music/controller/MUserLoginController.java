@@ -171,7 +171,6 @@ public class MUserLoginController extends BaseController
         lqw.eq(MUserLogin::getEmail, email);
         List<MUserLogin> list = userLoginService.list(lqw);
         if (list.size() == 1) {
-
             //先判断是否发送过验证码
             if (redisTemplate.hasKey("ZzzjzzZ-Music:"+email)) {
                 //如果发送过验证码
@@ -268,7 +267,7 @@ public class MUserLoginController extends BaseController
             //注册成功之后，向userinfo表中插入一条数据
             MUserInfo userInfo = new MUserInfo();
             userInfo.setUserId(userId);
-            userInfo.setImg("/profile/upload/2023/04/04/morenimg_20230404155159A001.jpg");
+//            userInfo.setImg("/profile/upload/2023/04/04/morenimg_20230404155159A001.jpg");
             userInfo.setName("用户" + RandomUtils.getGnerateNumberString(6));
             userInfo.setIntroduction("这个人很懒，什么都没有留下！");
             userInfo.setGender("2");
